@@ -15,16 +15,15 @@ def Fr(v):
     """
     Reibungswidersandkraft des Autos in ahängigkeit zur geschwindigkeit in [N]
     """
-    return v/25 #Schätzwert
+    return (v/20) #Schätzwert
 
 def Ff(phi):
     """
     Federkraft in abhängigkeit zum Winkel in [N]
     """
-    if phi < 90:
-        return 7.5
+
     if phi < 180:
-        return 1
+        return 0.2
     else:
         return 0
 
@@ -49,11 +48,14 @@ def f(t, y):
     [p,x] = y
     v = p/m
     
-    return [find_Fa(rr,rh,u,find_phi(x,rr,u)) - Fr(v),v]
+    return [ find_Fa(rr,rh,u,find_phi(x,rr,u)) - Fr(v), v]
 
 sulution = scipy.integrate.solve_ivp(f, [0, 10], [0,0], dense_output=True)
 
-plt.plot(sulution.t, sulution.y[0,:])
+t = np.linspace(0, 10, 300)
+
+plt.plot(t, sulution.sol(t)[1].T)
+
 
 plt.xlabel('t')
 
