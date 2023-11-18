@@ -1,5 +1,6 @@
 from math import *
 import numpy as np
+import matplotlib.pyplot as plt
 import scipy
 
 u = 10 #[-] Übersetzung des getriebes
@@ -23,7 +24,7 @@ def Ff(phi):
     if phi < 90:
         return 7.5
     if phi < 180:
-        return 2
+        return 1
     else:
         return 0
 
@@ -50,15 +51,9 @@ def f(t, y):
     
     return [find_Fa(rr,rh,u,find_phi(x,rr,u)) - Fr(v),v]
 
-sol = scipy.integrate.solve_ivp(f, [0, 10], [0,0],dense_output=True)
+sulution = scipy.integrate.solve_ivp(f, [0, 10], [0,0], dense_output=True)
 
-t = np.linspace(0, 15, 300)
-
-z = sol.y
-
-import matplotlib.pyplot as plt
-
-plt.plot(sol.t, sol.y[0,:])
+plt.plot(sulution.t, sulution.y[0,:])
 
 plt.xlabel('t')
 
