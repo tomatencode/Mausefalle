@@ -1,4 +1,6 @@
 from math import *
+import numpy as np
+import scipy
 
 u = 10 #[-] Übersetzung des getriebes
 rr = 1 #[m] radius des antriebsreifen
@@ -12,14 +14,16 @@ def Fr(v):
     """
     Reibungswidersandkraft des Autos in ahängigkeit zur geschwindigkeit in [N]
     """
-    return v/5 #Schätzwert
+    return v/25 #Schätzwert
 
 def Ff(phi):
     """
     Federkraft in abhängigkeit zum Winkel in [N]
     """
+    if phi < 90:
+        return 7.5
     if phi < 180:
-        return 2.5 #Schätzwert
+        return 2
     else:
         return 0
 
@@ -40,17 +44,26 @@ def find_Fa(rr,rh,u,phi):
     Fa = Me/rr
     return Fa
 
-def update(x,v,m,rr,rh,u,dt):
-    phi = find_phi(x,rr,u)
-    Fa = find_Fa(rr,rh,u,phi)
-    dI_dt = Fa-Fr(v)
-    v = dI_dt/m
-    x += v*dt
-    return x, v
+def f(t, y):
+    [p,x] = y
+    v = p/m
+    
+    return [find_Fa(rr,rh,u,find_phi(x,rr,u)) - Fr(v),v]
 
-while find_phi(x,rr,u) < 180 or v < 0.1:
-    x_new,v_new = update(x,v,m,rr,rh,u,1/120)
-    x = x_new
-    v = v_new
+sol = scipy.integrate.solve_ivp(f, [0, 10], [0,0],dense_output=True)
 
-print(x)
+t = np.linspace(0, 15, 300)
+
+z = sol.y
+
+import matplotlib.pyplot as plt
+
+plt.plot(sol.t, sol.y[0,:])
+
+plt.xlabel('t')
+
+plt.legend(['t', 'p'], shadow=True)
+
+plt.title('test')
+
+plt.show()
