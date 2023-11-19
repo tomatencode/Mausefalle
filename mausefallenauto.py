@@ -47,13 +47,13 @@ def find_Fa(rr,rh,u,phi):
 
     return Fa
 
-def find_simulation_lenght(max_lenght,sulution,rr,u):
+def find_simulation_lenght(max_lenght,sulution,rr,u,m):
     for i in range(0,max_lenght):
         x = sulution.sol(i)[1]
         v = sulution.sol(i)[0]
         print(x)
         print(find_phi(x,rr,u))
-        if find_phi(x,rr,u) > 0.5 and v < 0.1:
+        if find_phi(x,rr,u) > 0.5 and v/m < 0.1:
             return x
     return max_lenght
 
@@ -65,7 +65,7 @@ def f(t, y):
 
 sulution = scipy.integrate.solve_ivp(f, [0, max_lenght], [0,0], dense_output=True)
 
-s = find_simulation_lenght(max_lenght,sulution,rr,u)
+s = find_simulation_lenght(max_lenght,sulution,rr,u,m)
 
 
 
