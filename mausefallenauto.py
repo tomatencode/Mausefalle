@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy
 
-ü = 10 #[-] Übersetzung des getriebes
+ü = 1 #[-] Übersetzung des getriebes
 rr = 0.1 #[m] radius des antriebsreifen
 rh = 0.1 #[m] länge des hebels
 m = 0.1 #[kg] masse des autos
@@ -74,25 +74,46 @@ def find_Fa(rr,rh,ü,phi):
     return Fa # [Nm]
 
 
-def find_simulation_lenght(max_lenght,sulution,rr,ü,m,):
-    for i in range(0,max_lenght):
-        x = sulution.sol(i)[1]
-        v = sulution.sol(i)[0]
-        if find_phi(x,rr,ü) > 0.5 and v/m < 0.1:
-            return x
+def find_simulation_lenght(max_lenght,sulution,rr,ü,v_min):
+    """
+    findet passende simulationslänge in [s]
+    """
+
+    # testet für jede sekunde ob das auto langsamer als v_min (v < v_min) ist und ob die Mausefalle zu (phi < 0.5) ist.
+
+    # max_lenght[s] = maximale simulationslänge
+    # v_min[m/s] = Geschwindigkeit ab der die simulation abgebrochen wird
+    # x[m] = zurückgelegte strecke
+    # v[m/s] = aktuelle geschwindigkeit
+    # phi[-] = anzahl der bisherigen umdrehungen
+
+    for s in range(0,max_lenght):
+        x = sulution.sol(s)[1]
+        v = sulution.sol(s)[0]
+        phi = find_phi(x,rr,ü)
+        if phi > 0.5 and v < v_min:
+            return s
+    
     return max_lenght
 
 
 def f(t, y):
-    [v,x] = y
+    """
+    Differenzialgleichung die von scipy gelöst wird
+    """
+
+    # v[m/s] = aktuelle geschwindigkeit
+    # x[m] = zurückgelegte strecke
+    # t[s] = zeit
+
+    [v,x] = y 
     
     return [ (find_Fa(rr,rh,ü,find_phi(x,rr,ü)) - Fr(v))/m, v]
 
+# löst Differenzialgleichung
 sulution = scipy.integrate.solve_ivp(f, [0, max_lenght], [0,0], dense_output=True)
 
-s = find_simulation_lenght(max_lenght,sulution,rr,ü,m)
-s = max_lenght
-
+s = find_simulation_lenght(max_lenght,sulution,rr,ü,0.1)
 
 t = np.linspace(0, s, 300)
 
@@ -100,9 +121,7 @@ plt.plot(t, sulution.sol(t)[0].T)
 plt.plot(t, sulution.sol(t)[1].T)
 
 plt.xlabel('t')
-
 plt.legend(['speed', 'position'], shadow=True)
-
 plt.title('test')
 
 plt.show()
