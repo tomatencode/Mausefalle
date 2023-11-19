@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import scipy
 
 u = 1 #[-] Übersetzung des getriebes
-rr = 0.1 #[m] radius des antriebsreifen
-rh = 0.1 #[m] länge des hebels
+rr = 1 #[m] radius des antriebsreifen
+rh = 1 #[m] länge des hebels
 m = 0.1 #[kg] masse des autos
 
 max_lenght = 30 #[s] maximum simulation length
@@ -14,17 +14,17 @@ def Fr(v):
     """
     Reibungswidersandkraft des Autos in ahängigkeit zur geschwindigkeit in [N]
     """
-    return (v/20) #Schätzwert
+    return v/20 #Schätzwert
 
 
 
 def Ff(phi):
     """
-    Federkraft in abhängigkeit zum Winkel in [N]
+    Federkraft in abhängigkeit zu den umdrehungen in [N]
     """
 
     if phi < 0.5:
-        return 2.5
+        return 0.02/u
     else:
         return 0
 
@@ -64,7 +64,7 @@ def f(t, y):
 sulution = scipy.integrate.solve_ivp(f, [0, max_lenght], [0,0], dense_output=True)
 
 s = find_simulation_lenght(max_lenght,sulution,rr,u,m)
-
+s = max_lenght
 
 
 t = np.linspace(0, s, 300)
