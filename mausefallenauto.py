@@ -51,8 +51,6 @@ def find_simulation_lenght(max_lenght,sulution,rr,u,m):
     for i in range(0,max_lenght):
         x = sulution.sol(i)[1]
         v = sulution.sol(i)[0]
-        print(x)
-        print(find_phi(x,rr,u))
         if find_phi(x,rr,u) > 0.5 and v/m < 0.1:
             return x
     return max_lenght
