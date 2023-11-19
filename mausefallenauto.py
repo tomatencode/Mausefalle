@@ -56,7 +56,7 @@ def find_Fa(rr,rh,ü,phi):
     findet die Kraft des Rades in [N]
     """
 
-    # findet das Drehmoment der Mausefalle Ma
+    # findet das Drehmoment der Mausefalle Ma.
     # benutzt das übersetztungsverhältnis um Ma in das Drehmoment der Achse Me zu überrsetzten.
     # wandelt das drehmoment der Achse in Die kraft des Rades Fa um.
 
