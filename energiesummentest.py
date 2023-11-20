@@ -12,8 +12,8 @@ def find_E(M,w):
     # w[rad] = anzahl der umdrehungen in Radien
     # E[J] = Energie
 
-    e = M * w
+    e = M * w # e[J] = M[Nm] * w[rad]
 
-    return e
+    return e #[J]
 
 print(find_E(2,pi))

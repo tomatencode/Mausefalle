@@ -48,9 +48,9 @@ def find_phi(x,rr,ü):
 
     ur = 2 * pi * rr # ur[m] = 2pi[-] * rr[m]
     phi = x / ( ur * ü ) # phi[-] = x[m] / (ur[m] * u[-])
-    phi_rad = 2 * pi * phi
+    phi_rad = 2 * pi * phi # phi_rad[rad] = 2pi[-] * phi[-]
 
-    return phi_rad
+    return phi_rad # [rad]
 
 def find_Fa(rr,rh,ü,phi):
     """
