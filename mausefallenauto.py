@@ -68,7 +68,7 @@ def find_Fa(rr,rh,ü,phi):
     # ü[-] = überstetzungsverhältnis von Mausefalle zu Achse
 
     Ma = rh * Ff(phi) # Ma[Nm] = rh[m] * Ff(phi[-])[N]
-    Me = Ma / ü # Me[Nm] = ü[-] * Ma[Nm]
+    Me = Ma / ü # Me[Nm] = Ma / ü[-]
     Fa = Me / rr # Fa[N] = Me[Nm] / rr[m]
 
     return Fa # [Nm]
