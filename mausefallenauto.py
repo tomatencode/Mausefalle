@@ -8,7 +8,7 @@ rr = 0.1 #[m] radius des antriebsreifen
 rh = 0.1 #[m] länge des hebels
 m = 0.1 #[kg] masse des autos
 
-max_lenght = 30 #[s] maximum simulation length
+max_sim_lenght = 30 #[s] maximum simulation length
 
 def Fr(v):
     """
@@ -111,9 +111,9 @@ def f(t, y):
     return [ (find_Fa(rr,rh,ü,find_phi(x,rr,ü)) - Fr(v))/m, v]
 
 # löst Differenzialgleichung
-sulution = scipy.integrate.solve_ivp(f, [0, max_lenght], [0,0], dense_output=True)
+sulution = scipy.integrate.solve_ivp(f, [0, max_sim_lenght], [0,0], dense_output=True)
 
-s = find_simulation_lenght(max_lenght,sulution,rr,ü,0.1)
+s = find_simulation_lenght(max_sim_lenght,sulution,rr,ü,0.1)
 
 t = np.linspace(0, s, 300)
 
