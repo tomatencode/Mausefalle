@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy
 
-ü = 1 #[-] Übersetzung des getriebes
+ü = 10 #[-] Übersetzung des getriebes
 rr = 0.1 #[m] radius des antriebsreifen
 rh = 0.1 #[m] länge des hebels
 m = 0.1 #[kg] masse des autos
@@ -68,7 +68,7 @@ def find_Fa(rr,rh,ü,phi):
     # ü[-] = überstetzungsverhältnis von Mausefalle zu Achse
 
     Ma = rh * Ff(phi) # Ma[Nm] = rh[m] * Ff(phi[-])[N]
-    Me = ü * Ma # Me[Nm] = ü[-] * Ma[Nm]
+    Me = Ma / ü # Me[Nm] = ü[-] * Ma[Nm]
     Fa = Me / rr # Fa[N] = Me[Nm] / rr[m]
 
     return Fa # [Nm]
