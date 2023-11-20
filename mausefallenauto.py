@@ -28,7 +28,7 @@ def Ff(phi):
 
     # phi[-] = anzahl der bisherigen umdrehungen
 
-    if phi < 0.5:
+    if phi < pi:
         return 2 # Kraft der Feder in [N] (Schätzwert)
     else:
         return 0 # Kraft der Feder in [N]
@@ -48,8 +48,9 @@ def find_phi(x,rr,ü):
 
     ur = 2 * pi * rr # ur[m] = 2pi[-] * rr[m]
     phi = x / ( ur * ü ) # phi[-] = x[m] / (ur[m] * u[-])
+    phi_rad = 2 * pi * phi
 
-    return phi
+    return phi_rad
 
 def find_Fa(rr,rh,ü,phi):
     """
@@ -91,7 +92,7 @@ def find_simulation_lenght(max_lenght,sulution,rr,ü,v_min):
         x = sulution.sol(s)[1]
         v = sulution.sol(s)[0]
         phi = find_phi(x,rr,ü)
-        if phi > 0.5 and v < v_min:
+        if phi > pi and v < v_min:
             return s
     
     return max_lenght

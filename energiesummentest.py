@@ -1,20 +1,19 @@
 from math import *
+from mausefallenauto import find_Fa
 
-def find_Emf(Ma,w = 0.5):
+def find_E(M,w):
     """
-    berechnet wie viel Energie in der mausefalle gespeichert ist in [J].
+    berechnet die Energie[J] mit Drhemoment[Nm] und umdrehungen[-].
     """
 
-    # errechnet die Energie[J] indem es das Drehmoment[Nm] mit dem winkelbereich[rad] der mausefalle multiplizirt.
+    # errechnet die Energie[J] indem es das Drehmoment[Nm] mit dem winkelbereich[rad].
 
-    # Ma[Nm] = Drehmoment der mausefalle
-    # w[-] = anzahl der umdrehungen der mausefalle
-    # w_rad[rad] = anzahl der umdrehungen der mausefalle
-    # Emf[J] = Energie der mausefalle 
+    # M[Nm] = Drehmoment
+    # w[rad] = anzahl der umdrehungen in Radien
+    # E[J] = Energie
 
-    w_rad = 2*pi*w
-    Emf = Ma * w_rad
+    e = M * w
 
-    return Emf
+    return e
 
-print(find_Emf(2))
+print(find_E(2,pi))
