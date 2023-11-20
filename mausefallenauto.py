@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy
 
-ü = 10 #[-] Übersetzung des getriebes
+u = 10 #[-] Übersetzung des getriebes
 rr = 0.1 #[m] radius des antriebsreifen
 rh = 0.1 #[m] länge des hebels
 m = 0.1 #[kg] masse des autos
@@ -33,7 +33,7 @@ def Ff(phi):
     else:
         return 0 # Kraft der Feder in [N]
 
-def find_phi(x,rr,ü):
+def find_phi(x,rr,u):
     """
     findet die anzahl der umdrehungen der mausefalle in abhängigkeit zur zurückgelegten strecke in [-],
     """
@@ -47,7 +47,7 @@ def find_phi(x,rr,ü):
     # phi[-] = anzahl der bisherigen umdrehungen
 
     ur = 2 * pi * rr # ur[m] = 2pi[-] * rr[m]
-    phi = x / ( ur * ü ) # phi[-] = x[m] / (ur[m] * u[-])
+    phi = x / ( ur * u ) # phi[-] = x[m] / (ur[m] * u[-])
     phi_rad = 2 * pi * phi # phi_rad[rad] = 2pi[-] * phi[-]
 
     return phi_rad # [rad]
@@ -75,7 +75,7 @@ def find_Fa(rr,rh,ü,phi):
     return Fa # [Nm]
 
 
-def find_simulation_lenght(max_lenght,sulution,rr,ü,v_min):
+def find_simulation_lenght(max_lenght,sulution,rr,u,v_min):
     """
     findet passende simulationslänge in [s]
     """
@@ -91,7 +91,7 @@ def find_simulation_lenght(max_lenght,sulution,rr,ü,v_min):
     for s in range(0,max_lenght):
         x = sulution.sol(s)[1]
         v = sulution.sol(s)[0]
-        phi = find_phi(x,rr,ü)
+        phi = find_phi(x,rr,u)
         if phi > pi and v < v_min:
             return s
     
@@ -109,12 +109,12 @@ def f(t, y):
 
     [v,x] = y 
     
-    return [ (find_Fa(rr,rh,ü,find_phi(x,rr,ü)) - Fr(v))/m, v]
+    return [ (find_Fa(rr,rh,u,find_phi(x,rr,u)) - Fr(v))/m, v]
 
 # löst Differenzialgleichung
 sulution = scipy.integrate.solve_ivp(f, [0, max_sim_lenght], [0,0], dense_output=True)
 
-s = find_simulation_lenght(max_sim_lenght,sulution,rr,ü,0.1)
+s = find_simulation_lenght(max_sim_lenght,sulution,rr,u,0.1)
 
 t = np.linspace(0, s, 300)
 
