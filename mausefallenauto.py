@@ -7,14 +7,13 @@ u = 12 #[-] Übersetzung des getriebes
 rr = 0.1 #[m] radius des antriebsreifen
 m = 0.1 #[kg] masse des autos
 
-max_sim_lenght = 30 #[s] maximum simulation length
+max_sim_length = 30 #[s] maximum simulation length
 
 def Fr(v):
     """
     Reibungswidersandkraft des Autos in ahängigkeit zur geschwindigkeit in [N] (Benutzerdefinirt)
     """
     return v / 20 # Wiederstand in [N] (Schätzwert)
-
 
 
 def Ff(phi):
@@ -31,6 +30,8 @@ def Ff(phi):
         return 2 # Kraft der Feder in [Nm] (Schätzwert)
     else:
         return 0 # Kraft der Feder in [Nm]
+
+
 
 def find_phi(x,rr,u):
     """
@@ -50,6 +51,7 @@ def find_phi(x,rr,u):
     phi_rad = 2 * pi * phi # phi_rad[rad] = 2pi[-] * phi[-]
 
     return phi_rad # [rad]
+
 
 def find_Fa(rr,ü,phi):
     """
@@ -72,6 +74,7 @@ def find_Fa(rr,ü,phi):
     Fa = Me / rr # Fa[N] = Me[Nm] / rr[m]
 
     return Fa # [Nm]
+
 
 def f(t, y):
     """
@@ -110,10 +113,20 @@ def find_simulation_lenght(max_lenght,sulution,rr,u,v_min):
     return max_lenght
 
 
-# löst Differenzialgleichung
-sulution = scipy.integrate.solve_ivp(f, [0, max_sim_lenght], [0,0], dense_output=True)
+def solve_ivp(max_sim_length):
+    """
+    lößt die differenzialgleichung f(t,y) mit scipy
+    """
 
-s = find_simulation_lenght(max_sim_lenght,sulution,rr,u,0.1)
+    # max_sim_length[s] = maximale simulationslänge
+     
+    sulution = scipy.integrate.solve_ivp(f, [0, max_sim_length], [0,0], dense_output=True)
+    return sulution
+
+
+sulution = solve_ivp(max_sim_length)
+
+s = find_simulation_lenght(max_sim_length,sulution,rr,u,0.1)
 
 t = np.linspace(0, s, 300)
 
