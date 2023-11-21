@@ -90,6 +90,17 @@ def f(t, y):
     return [ (find_Fa(rr,u,find_phi(x,rr,u)) - Fr(v))/m, v]
 
 
+def solve_ivp(max_sim_length):
+    """
+    lößt die differenzialgleichung f(t,y) mit scipy
+    """
+
+    # max_sim_length[s] = maximale simulationslänge
+     
+    sulution = scipy.integrate.solve_ivp(f, [0, max_sim_length], [0,0], dense_output=True)
+    return sulution
+
+
 def find_simulation_lenght(max_lenght,sulution,rr,u,v_min):
     """
     findet passende simulationslänge in [s]
@@ -112,16 +123,6 @@ def find_simulation_lenght(max_lenght,sulution,rr,u,v_min):
     
     return max_lenght
 
-
-def solve_ivp(max_sim_length):
-    """
-    lößt die differenzialgleichung f(t,y) mit scipy
-    """
-
-    # max_sim_length[s] = maximale simulationslänge
-     
-    sulution = scipy.integrate.solve_ivp(f, [0, max_sim_length], [0,0], dense_output=True)
-    return sulution
 
 
 sulution = solve_ivp(max_sim_length)
