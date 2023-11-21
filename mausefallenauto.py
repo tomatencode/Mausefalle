@@ -3,9 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy
 
-u = 10 #[-] Übersetzung des getriebes
+u = 12 #[-] Übersetzung des getriebes
 rr = 0.1 #[m] radius des antriebsreifen
-rh = 0.1 #[m] länge des hebels
 m = 0.1 #[kg] masse des autos
 
 max_sim_lenght = 30 #[s] maximum simulation length
@@ -29,9 +28,9 @@ def Ff(phi):
     # phi[-] = anzahl der bisherigen umdrehungen
 
     if phi < pi:
-        return 2 # Kraft der Feder in [N] (Schätzwert)
+        return 2 # Kraft der Feder in [Nm] (Schätzwert)
     else:
-        return 0 # Kraft der Feder in [N]
+        return 0 # Kraft der Feder in [Nm]
 
 def find_phi(x,rr,u):
     """
@@ -52,7 +51,7 @@ def find_phi(x,rr,u):
 
     return phi_rad # [rad]
 
-def find_Fa(rr,rh,ü,phi):
+def find_Fa(rr,ü,phi):
     """
     findet die Kraft des Rades in [N]
     """
@@ -68,11 +67,24 @@ def find_Fa(rr,rh,ü,phi):
     # rr[M] = Radius des Rades
     # ü[-] = überstetzungsverhältnis von Mausefalle zu Achse
 
-    Ma = rh * Ff(phi) # Ma[Nm] = rh[m] * Ff(phi[-])[N]
+    Ma = Ff(phi) # Ma[Nm] = Ff(phi[rad])[Nn]
     Me = Ma / ü # Me[Nm] = Ma / ü[-]
     Fa = Me / rr # Fa[N] = Me[Nm] / rr[m]
 
     return Fa # [Nm]
+
+def f(t, y):
+    """
+    Differenzialgleichung die von scipy gelöst wird
+    """
+
+    # v[m/s] = aktuelle geschwindigkeit
+    # x[m] = zurückgelegte strecke
+    # t[s] = zeit
+
+    [v,x] = y 
+    
+    return [ (find_Fa(rr,u,find_phi(x,rr,u)) - Fr(v))/m, v]
 
 
 def find_simulation_lenght(max_lenght,sulution,rr,u,v_min):
@@ -98,19 +110,6 @@ def find_simulation_lenght(max_lenght,sulution,rr,u,v_min):
     return max_lenght
 
 
-def f(t, y):
-    """
-    Differenzialgleichung die von scipy gelöst wird
-    """
-
-    # v[m/s] = aktuelle geschwindigkeit
-    # x[m] = zurückgelegte strecke
-    # t[s] = zeit
-
-    [v,x] = y 
-    
-    return [ (find_Fa(rr,rh,u,find_phi(x,rr,u)) - Fr(v))/m, v]
-
 # löst Differenzialgleichung
 sulution = scipy.integrate.solve_ivp(f, [0, max_sim_lenght], [0,0], dense_output=True)
 
@@ -118,11 +117,13 @@ s = find_simulation_lenght(max_sim_lenght,sulution,rr,u,0.1)
 
 t = np.linspace(0, s, 300)
 
-plt.plot(t, sulution.sol(t)[0].T)
-plt.plot(t, sulution.sol(t)[1].T)
+plt.plot(t, sulution.sol(t)[0].T,label='Speed[m/s]')
+plt.plot(t, sulution.sol(t)[1].T,label='position[m]')
+plt.plot(t, find_phi(sulution.sol(t)[1],rr,u).T,label='Winkel Mausefalle[rad]')
+plt.plot(t, Fr(sulution.sol(t)[0]).T,label='Reibung[N]')
 
 plt.xlabel('t')
-plt.legend(['speed', 'position'], shadow=True)
-plt.title('test')
+plt.legend()
+plt.title('Auto')
 
 plt.show()
