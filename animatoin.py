@@ -4,7 +4,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Ellipse, Triangle, Rectangle
 from kivy.properties import StringProperty
-from mausefallenauto import solve_ivp, find_Fa, find_phi, rr, u, m
+from mausefallenauto import solve_ivp, find_Fa, find_phi, Fr, rr, u, m
 from mausefallenauto import rr
 from mausefallenauto import m
 from mausefallenauto import u
@@ -19,8 +19,8 @@ class MainWidget(RelativeLayout):
     car_x = 0
 
     arrow_speed_length = 0
-
     arrow_acceleration_length = 0
+    arrow_drag_length = 0
 
 
     sim_speed = 1
@@ -34,28 +34,45 @@ class MainWidget(RelativeLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.innit_car()
         self.innit_speed_arrow()
         self.innit_acceleration_arrow()
+        self.innit_drag_arrow()
+        self.innit_car()
     
         Clock.schedule_interval(self.update,1.0/60.0)
 
     def innit_car(self):
-        with self.canvas:
+        with self.canvas.before:
             Color(1,1,1)
-            self.car = Ellipse(size = (self.size_car,self.size_car))
+            self.car = Ellipse()
+        with self.canvas:
+            Color(.7,.7,.7)
+            self.arrow_base_circle_1 = Ellipse()
+            self.arrow_base_circle_2 = Ellipse()
 
     def innit_speed_arrow(self):
         with self.canvas:
             Color(0,0.6,0)
             self.speed_arrow_base = Rectangle()
+        with self.canvas.after:
+            Color(0,0.6,0)
             self.speed_arrow_tip = Triangle()
         
     def innit_acceleration_arrow(self):
         with self.canvas:
             Color(0,0,0.6)
             self.acceleration_arrow_base = Rectangle()
+        with self.canvas.after:
+            Color(0,0,0.6)
             self.acceleration_arrow_tip = Triangle()
+    
+    def innit_drag_arrow(self):
+        with self.canvas:
+            Color(0.7,0,0)
+            self.drag_arrow_base = Rectangle()
+        with self.canvas.after:
+            Color(0.7,0,0)
+            self.drag_arrow_tip = Triangle()
     
     def start_stop(self,obj):
         if obj.state == "down":
@@ -71,36 +88,48 @@ class MainWidget(RelativeLayout):
     def speed_change(self,obj):
         self.sim_speed = obj.value
 
-    def draw_triangle(self,extra_y,length):
+    def draw_triangle(self,extra_y,length,direction):
         arrow_pos_x = self.car_x+self.size_car*0.5
         arrow_y = self.size_car*0.5
-        arrow_base_pos = arrow_pos_x,arrow_y-self.height/300+extra_y
-        arrow_base_size = length,self.height/150
+        arrow_base_pos = arrow_pos_x,arrow_y-self.size_car*0.08+extra_y
+        arrow_base_size = length,self.size_car*0.16
         point1 = (arrow_pos_x+length,arrow_y-self.height/75+extra_y)
         point2 = (arrow_pos_x+length,arrow_y+self.height/75+extra_y)
-        point3 = (arrow_pos_x+length+self.width/60,arrow_y+extra_y)
+        point3 = (arrow_pos_x+length+(self.width/60)*direction,arrow_y+extra_y)
         return (arrow_base_pos,arrow_base_size,(*point1, *point2, *point3))
 
     def update_speed_arrow(self):
         self.arrow_speed_length = (self.speed*10)*self.sim_speed
-        base_pos,base_size,points = self.draw_triangle(self.size_car*-0.3,self.arrow_speed_length)
+        base_pos,base_size,points = self.draw_triangle(self.size_car*-0.3,self.arrow_speed_length,1)
         self.speed_arrow_base.pos = base_pos
         self.speed_arrow_base.size = base_size
         self.speed_arrow_tip.points = [*points]
     
     def update_acceleration_arrow(self):
-        self.arrow_acceleration_length = (find_Fa(rr,u,find_phi(self.distance,rr,u))*10)/m
-        base_pos,base_size,points = self.draw_triangle(self.size_car*0.3,self.arrow_acceleration_length)
+        self.arrow_acceleration_length = find_Fa(rr,u,m,find_phi(self.distance,rr,u))*10
+        base_pos,base_size,points = self.draw_triangle(self.size_car*0.3,self.arrow_acceleration_length,1)
         self.acceleration_arrow_base.pos = base_pos
         self.acceleration_arrow_base.size = base_size
         self.acceleration_arrow_tip.points = [*points]
 
+    def update_drag_arrow(self):
+        self.arrow_drag_length = Fr(self.speed,m)*10
+        base_pos,base_size,points = self.draw_triangle(self.size_car*0.3,-self.arrow_drag_length,-1)
+        self.drag_arrow_base.pos = base_pos
+        self.drag_arrow_base.size = base_size
+        self.drag_arrow_tip.points = [*points]
+
     def update_car(self):
         self.size_car = self.width/30
-        self.car.size = (self.size_car,self.size_car)
         self.max_distance = self.sulution.sol(max_sim_length)[1]
         self.distance_percent = self.distance / self.max_distance
         self.car_x = (self.track_start*self.width) + (self.track_length*self.width) * self.distance_percent
+        self.car.size = (self.size_car,self.size_car)
+        self.car.pos = (self.car_x,0)
+        self.arrow_base_circle_1.size = (self.size_car*0.3,self.size_car*0.3)
+        self.arrow_base_circle_1.pos = (self.car_x+self.size_car*0.35,self.size_car*0.05)
+        self.arrow_base_circle_2.size = (self.size_car*0.3,self.size_car*0.3)
+        self.arrow_base_circle_2.pos = (self.car_x+self.size_car*0.35,self.size_car*0.65)
 
     def update_lables(self):
 
@@ -118,12 +147,11 @@ class MainWidget(RelativeLayout):
         self.distance = self.sulution.sol(self.time_running)[1]
         self.speed = self.sulution.sol(self.time_running)[0]
 
-        self.update_car()
         self.update_speed_arrow()
         self.update_acceleration_arrow()
+        self.update_drag_arrow()
         self.update_lables()
-
-        self.car.pos = (self.car_x,0)
+        self.update_car()
 
 class AutoAnimationApp(App):
     def build(self):
