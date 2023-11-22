@@ -106,14 +106,14 @@ class MainWidget(RelativeLayout):
         self.speed_arrow_tip.points = [*points]
     
     def update_acceleration_arrow(self):
-        self.arrow_acceleration_length = find_Fa(rr,u,m,find_phi(self.distance,rr,u))*10
+        self.arrow_acceleration_length = (find_Fa(rr,u,find_phi(self.distance,rr,u))*10)/m
         base_pos,base_size,points = self.draw_triangle(self.size_car*0.3,self.arrow_acceleration_length,1)
         self.acceleration_arrow_base.pos = base_pos
         self.acceleration_arrow_base.size = base_size
         self.acceleration_arrow_tip.points = [*points]
 
     def update_drag_arrow(self):
-        self.arrow_drag_length = Fr(self.speed,m)*10
+        self.arrow_drag_length = (Fr(self.speed)*10)/m
         base_pos,base_size,points = self.draw_triangle(self.size_car*0.3,-self.arrow_drag_length,-1)
         self.drag_arrow_base.pos = base_pos
         self.drag_arrow_base.size = base_size

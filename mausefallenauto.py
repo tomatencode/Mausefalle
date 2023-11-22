@@ -9,11 +9,11 @@ m = 0.1 #[kg] masse des autos
 
 max_sim_length = 30 #[s] maximum simulation length
 
-def Fr(v,m):
+def Fr(v):
     """
     Reibungswidersandkraft des Autos in ahängigkeit zur geschwindigkeit in [N] (Benutzerdefinirt)
     """
-    return (v / 20)/m # Wiederstand in [N] (Schätzwert)
+    return v / 20 # Wiederstand in [N] (Schätzwert)
 
 
 def Ff(phi):
@@ -53,7 +53,7 @@ def find_phi(x,rr,u):
     return phi_rad # [rad]
 
 
-def find_Fa(rr,ü,m,phi):
+def find_Fa(rr,ü,phi):
     """
     findet die Kraft des Rades in [N]
     """
@@ -71,9 +71,9 @@ def find_Fa(rr,ü,m,phi):
 
     Ma = Ff(phi) # Ma[Nm] = Ff(phi[rad])[Nn]
     Me = Ma / ü # Me[Nm] = Ma / ü[-]
-    Fa = Me / rr # Fa[N] = Me[Nm] / rr[m]
+    Fa = Me / rr # Fa[Nm] = Me[Nm] / rr[m]
 
-    return Fa/m # [N]
+    return Fa # [N]
 
 
 def f(t, y):
@@ -87,7 +87,7 @@ def f(t, y):
 
     [v,x] = y 
     
-    return [ find_Fa(rr,u,m,find_phi(x,rr,u)) - Fr(v,m), v]
+    return [ (find_Fa(rr,u,find_phi(x,rr,u)) - Fr(v))/m, v]
 
 
 def solve_ivp(max_sim_length):
@@ -134,7 +134,7 @@ t = np.linspace(0, s, 300)
 plt.plot(t, sulution.sol(t)[0].T,label='Speed[m/s]')
 plt.plot(t, sulution.sol(t)[1].T,label='position[m]')
 plt.plot(t, find_phi(sulution.sol(t)[1],rr,u).T,label='Winkel Mausefalle[rad]')
-plt.plot(t, Fr(sulution.sol(t)[0],m).T,label='Reibung[N]')
+plt.plot(t, (Fr(sulution.sol(t)[0])/m).T,label='Reibung[m/s²]')
 
 plt.xlabel('t')
 plt.legend()
