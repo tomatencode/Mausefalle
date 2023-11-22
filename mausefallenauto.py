@@ -73,7 +73,7 @@ def find_Fa(rr,ü,phi):
     Me = Ma / ü # Me[Nm] = Ma / ü[-]
     Fa = Me / rr # Fa[N] = Me[Nm] / rr[m]
 
-    return Fa # [Nm]
+    return Fa # [N]
 
 
 def f(t, y):
