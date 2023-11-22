@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy
 
-u = 12 #[-] Übersetzung des getriebes
+u = 12 #[-] Verhältnis von Drehmoment der Feder zu Drehmoment der Achse
 rr = 0.1 #[m] radius des antriebsreifen
 m = 0.1 #[kg] masse des autos
 
