@@ -4,17 +4,18 @@ MainWidget:
         size_hint: (.1,.1)
         on_press: root.start_stop(self)
         text: "start"
+    Button:
+        pos_hint: {"x":.2,"y":.85}
+        size_hint: (.1,.1)
+        on_press: root.restart(self)
+        text: "restart"
     BoxLayout:
         pos_hint: {"x":.8,"y":.7}
         size_hint: (.15,.25)
         orientation: 'vertical'
         Label:
             text: root.car_v_label
-            size_hint: (1.0, 1.0)
-            halign:"left"
-            valign: "middle"
         Label:
             text: root.car_x_label
-            size_hint: (1.0, 1.0)
-            halign:"left"
-            valign: "middle"
+        Label:
+            text: root.car_t_label
