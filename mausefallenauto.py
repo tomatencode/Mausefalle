@@ -87,15 +87,29 @@ def f(t, y):
     
     return [ (find_Fa(rr,u,find_phi(x,rr,u)) - Fr(v))/m, v]
 
+def fnofric(t, y):
+    """
+    Differenzialgleichung die von scipy gelöst wird ohne reibung
+    """
 
-def solve_ivp(max_sim_length):
+    # v[m/s] = aktuelle geschwindigkeit
+    # x[m] = zurückgelegte strecke
+    # t[s] = zeit
+
+    [v,x] = y 
+    
+    return [ find_Fa(rr,u,find_phi(x,rr,u))/m, v]
+
+def solve_ivp(max_sim_length,friction):
     """
     lößt die differenzialgleichung f(t,y) mit scipy
     """
 
     # max_sim_length[s] = maximale simulationslänge
-     
-    sulution = scipy.integrate.solve_ivp(f, [0, max_sim_length], [0,0], dense_output=True)
+    if friction == True:
+        sulution = scipy.integrate.solve_ivp(f, [0, max_sim_length], [0,0], dense_output=True)
+    else:
+        sulution = scipy.integrate.solve_ivp(fnofric, [0, max_sim_length], [0,0], dense_output=True)
     return sulution
 
 
