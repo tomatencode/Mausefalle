@@ -1,5 +1,5 @@
 from math import *
-from mausefallenauto import solve_ivp,m,max_sim_length
+from main import solve_ivp,m,max_sim_length
 
 tolleranz = 0.05 # erlaubte abweichung des energie erhaltungs Satzes
 

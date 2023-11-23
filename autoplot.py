@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from mausefallenauto import solve_ivp, find_simulation_lenght,find_phi,Fr,rr,u,max_sim_length,m,friction
+from main import solve_ivp, find_simulation_lenght,find_phi,Fr,rr,u,max_sim_length,m,friction
 
 
 sulution = solve_ivp(max_sim_length,friction) # lösung der differenzialgleichung [-]
