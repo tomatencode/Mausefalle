@@ -16,7 +16,7 @@ MainWidget:
                 text: "restart"
                 font_size: str(root.width/50)+"dp"
         Label:
-            text: "speed: " + str(round(slider.value,1))
+            text: "sim speed: " + str(round(slider.value,1))
             font_size: str(root.width/50)+"dp"
         Slider:
             id: slider
@@ -26,9 +26,12 @@ MainWidget:
             on_value: root.speed_change(self)
 
     BoxLayout:
-        pos_hint: {"x":.8,"y":.7}
-        size_hint: (.15,.25)
+        pos_hint: {"x":.8,"y":.65}
+        size_hint: (.15,.3)
         orientation: 'vertical'
+        Label:
+            text: root.car_a_label
+            font_size: str(root.width/50)+"dp"
         Label:
             text: root.car_v_label
             font_size: str(root.width/50)+"dp"

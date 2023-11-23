@@ -5,6 +5,7 @@ from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Ellipse, Triangle, Rectangle
 from kivy.properties import StringProperty
 from main import solve_ivp, find_Fa, find_phi, Fr, rr, u, m, friction, max_sim_length
+from energiesummentest import test
 
 
 class MainWidget(RelativeLayout):
@@ -24,8 +25,9 @@ class MainWidget(RelativeLayout):
 
     sim_play = False
     sulution = solve_ivp(max_sim_length,friction)
-    car_x_label = StringProperty("x: 0")
+    car_a_label = StringProperty("a: 0")
     car_v_label = StringProperty("v: 0")
+    car_x_label = StringProperty("x: 0")
     car_t_label = StringProperty("t: 0")
 
 
@@ -117,14 +119,14 @@ class MainWidget(RelativeLayout):
         return (arrow_base_pos,arrow_base_size,(*point1, *point2, *point3))
 
     def update_speed_arrow(self):
-        self.arrow_speed_length = (self.speed*10)*self.sim_speed*(self.width/800)
+        self.arrow_speed_length = self.speed*10*(self.width/800)
         base_pos,base_size,points = self.draw_triangle(self.size_car*-0.3,self.arrow_speed_length,1)
         self.speed_arrow_base.pos = base_pos
         self.speed_arrow_base.size = base_size
         self.speed_arrow_tip.points = [*points]
     
     def update_acceleration_arrow(self):
-        self.arrow_acceleration_length = ((find_Fa(rr,u,find_phi(self.distance,rr,u))*10)/m)*(self.width/800)
+        self.arrow_acceleration_length = self.acceleration*10*(self.width/800)
         base_pos,base_size,points = self.draw_triangle(self.size_car*0.3,self.arrow_acceleration_length,1)
         self.acceleration_arrow_base.pos = base_pos
         self.acceleration_arrow_base.size = base_size
@@ -132,7 +134,7 @@ class MainWidget(RelativeLayout):
 
     def update_friction_arrow(self):
         if friction == True:
-            self.arrow_friction_length = ((Fr(self.speed)*10)/m)*(self.width/800)
+            self.arrow_friction_length = self.friction*10*(self.width/800)
         else:
             self.arrow_friction_length = 0
         base_pos,base_size,points = self.draw_triangle(self.size_car*0.3,-self.arrow_friction_length,-1)
@@ -153,8 +155,9 @@ class MainWidget(RelativeLayout):
         self.arrow_base_circle_2.pos = (self.car_x+self.size_car*0.35,self.size_car*0.65)
 
     def update_lables(self):
-        self.car_x_label = "x: " + str(round(self.distance,1)) + "m"
+        self.car_a_label = "a: " + str(round(self.acceleration-self.friction,1)) + "m/s²"
         self.car_v_label = "v: " + str(round(self.speed,1)) + "m/s"
+        self.car_x_label = "x: " + str(round(self.distance,1)) + "m"
         self.car_t_label = "t: " + str(round(self.time_running,1)) + "s"
     
     def update(self,dt):
@@ -167,6 +170,8 @@ class MainWidget(RelativeLayout):
         
         self.distance = self.sulution.sol(self.time_running)[1]
         self.speed = self.sulution.sol(self.time_running)[0]
+        self.friction = (Fr(self.speed))/m
+        self.acceleration = find_Fa(rr,u,find_phi(self.distance,rr,u))/m
 
         self.update_speed_arrow()
         self.update_acceleration_arrow()
@@ -179,3 +184,4 @@ class AutoAnimationApp(App):
         self.load_kv("AutoAnimation.kv")
 
 AutoAnimationApp().run() # startet die app
+test(True) # testet ob der energie erhaltungssatz verletzt wurde

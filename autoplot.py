@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from main import solve_ivp, find_simulation_lenght,find_phi,Fr,rr,u,max_sim_length,m,friction
+from energiesummentest import test
 
 
 sulution = solve_ivp(max_sim_length,friction) # lösung der differenzialgleichung [-]
@@ -20,3 +21,4 @@ plt.legend()
 plt.title('Auto')
 
 plt.show()
+test(True) # testet ob der energieerhaltungs satz verletzt wurde

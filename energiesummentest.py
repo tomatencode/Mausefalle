@@ -33,17 +33,22 @@ def find_Wacc(m,ve,va):
 
     return Wacc #[J]
 
-sulution = solve_ivp(max_sim_length,False)
-ve = sulution.sol(max_sim_length)[0]
-va = sulution.sol(0)[0]
+def test(do_print):
+    sulution = solve_ivp(max_sim_length,False)
+    ve = sulution.sol(max_sim_length)[0]
+    va = sulution.sol(0)[0]
 
-Wmf = find_Wmf(2,pi)
-Wacc = find_Wacc(m,ve,va)
-abweichung = abs(Wmf - Wacc)
+    Wmf = find_Wmf(2,pi)
+    Wacc = find_Wacc(m,ve,va)
+    abweichung = abs(Wmf - Wacc)
 
-print("Emf = "+str(Wmf) + " J und Eacc = " + str(Wacc)+ " J")
+    print("Emf = "+str(Wmf) + " J und Eacc = " + str(Wacc)+ " J")
 
-if abweichung < tolleranz:
-    print("kein bug! abweichung: " + str(abweichung) + " J")
-else:
-    print("abweichung über tolleranz! abweichung: " + str(abweichung) + " J")
+    if do_print:
+        if abweichung < tolleranz:
+            print("kein bug! abweichung: " + str(abweichung) + " J")
+        else:
+            print("abweichung über tolleranz! abweichung: " + str(abweichung) + " J")
+    return abweichung
+
+#test(True)
