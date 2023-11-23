@@ -1,5 +1,12 @@
 # Bitte umbenennen in animation.py
 
+#
+# Sehr schöne Animation! Ums noch besser zu machen könntest Du noch
+# 
+# * Das Fahrzeug größer und vllt etwas hübscher machen
+# * Die Pfeile beschriften
+# * Die Darstellung der Feder ist glaub ich noch nicht korrekt
+
 from kivy.app import App
 from kivy.properties import Clock
 from kivy.uix.relativelayout import RelativeLayout
