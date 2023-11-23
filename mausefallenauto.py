@@ -5,7 +5,7 @@ u = 12 #[-] Verhältnis von Drehmoment der Feder zu Drehmoment der Achse
 rr = 0.1 #[m] radius des antriebsreifen
 m = 0.1 #[kg] masse des autos
 
-friction = False
+friction = True
 max_sim_length = 30 #[s] maximum simulation length
 
 def Fr(v):

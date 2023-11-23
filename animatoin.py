@@ -4,11 +4,8 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Ellipse, Triangle, Rectangle
 from kivy.properties import StringProperty
-from mausefallenauto import solve_ivp, find_Fa, find_phi, Fr, rr, u, m, friction
-from mausefallenauto import rr
-from mausefallenauto import m
-from mausefallenauto import u
-from mausefallenauto import max_sim_length
+from mausefallenauto import solve_ivp, find_Fa, find_phi, Fr, rr, u, m, friction, max_sim_length
+
 
 class MainWidget(RelativeLayout):
 
