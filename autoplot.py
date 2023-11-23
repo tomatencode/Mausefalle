@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from main import solve_ivp, find_simulation_lenght,find_phi,Fr,rr,u,max_sim_length,m,friction
+from main import solve_ivp, find_simulation_lenght,find_phi,Fr,rr,u,max_sim_lenght,m,friction
 from energiesummentest import test
 
 
-solution = solve_ivp(max_sim_length,friction) # lösung der differenzialgleichung [-]
+solution = solve_ivp(max_sim_lenght,friction) # lösung der differenzialgleichung [-]
 
-s = find_simulation_lenght(max_sim_length,solution,rr,u,0.1) # passende länge der simulation [s]
+s = find_simulation_lenght(max_sim_lenght,solution,rr,u,0.1) # passende länge der simulation [s]
 
 t = np.linspace(0, s, 300) # vektor von 300 zeitpunkten von 0 bis s [s]
 

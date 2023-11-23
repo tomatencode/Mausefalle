@@ -1,5 +1,5 @@
 from math import *
-from main import solve_ivp,m,max_sim_length
+from main import solve_ivp,m,max_sim_lenght
 
 tolleranz = 0.05 # erlaubte abweichung des energie erhaltungs Satzes
 
@@ -34,8 +34,8 @@ def find_Wacc(m,ve,va):
     return Wacc #[J]
 
 def test(do_print):
-    solution = solve_ivp(max_sim_length,False)
-    ve = solution.sol(max_sim_length)[0]
+    solution = solve_ivp(max_sim_lenght,False)
+    ve = solution.sol(max_sim_lenght)[0]
     va = solution.sol(0)[0]
 
     Wmf = find_Wmf(2,pi)

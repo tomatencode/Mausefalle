@@ -4,7 +4,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Ellipse, Triangle, Rectangle
 from kivy.properties import StringProperty
-from main import solve_ivp, find_Fa, find_phi, Fr, rr, u, m, friction, max_sim_length
+from main import solve_ivp, find_Fa, find_phi, Fr, rr, u, m, friction, max_sim_lenght
 from energiesummentest import test
 
 
@@ -24,7 +24,7 @@ class MainWidget(RelativeLayout):
     sim_speed = 1
 
     sim_play = False
-    solution = solve_ivp(max_sim_length,friction)
+    solution = solve_ivp(max_sim_lenght,friction)
     car_a_label = StringProperty("a: 0")
     car_v_label = StringProperty("v: 0")
     car_x_label = StringProperty("x: 0")
@@ -144,7 +144,7 @@ class MainWidget(RelativeLayout):
 
     def update_car(self):
         self.size_car = self.width/20
-        self.max_distance = self.solution.sol(max_sim_length)[1]
+        self.max_distance = self.solution.sol(max_sim_lenght)[1]
         self.distance_percent = self.distance / self.max_distance
         self.car_x = (self.track_start*self.width) + (self.track_length*self.width) * self.distance_percent
         self.car.size = (self.size_car,self.size_car)
