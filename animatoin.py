@@ -36,9 +36,12 @@ class MainWidget(RelativeLayout):
         self.innit_friction_arrow()
         self.innit_car()
     
-        Clock.schedule_interval(self.update,1.0/60.0)
+        Clock.schedule_interval(self.update,1.0/60.0) # ruft update() 60 mal pro sekunde
 
     def innit_car(self):
+        """
+        definirt die formen des autos
+        """
         with self.canvas.before:
             Color(1,1,1)
             self.car = Ellipse()
@@ -48,6 +51,9 @@ class MainWidget(RelativeLayout):
             self.arrow_base_circle_2 = Ellipse()
 
     def innit_speed_arrow(self):
+        """
+        definirt die formen des geschwindigkeits pfeil
+        """
         with self.canvas:
             Color(0,0.6,0)
             self.speed_arrow_base = Rectangle()
@@ -56,6 +62,9 @@ class MainWidget(RelativeLayout):
             self.speed_arrow_tip = Triangle()
         
     def innit_acceleration_arrow(self):
+        """
+        definirt die formen des beschleunigungs pfeil
+        """
         with self.canvas:
             Color(0,0,0.6)
             self.acceleration_arrow_base = Rectangle()
@@ -64,6 +73,9 @@ class MainWidget(RelativeLayout):
             self.acceleration_arrow_tip = Triangle()
     
     def innit_friction_arrow(self):
+        """
+        definirt die formen des reibungs pfeil
+        """
         with self.canvas:
             Color(0.7,0,0)
             self.friction_arrow_base = Rectangle()
@@ -72,6 +84,9 @@ class MainWidget(RelativeLayout):
             self.friction_arrow_tip = Triangle()
     
     def start_stop(self,obj):
+        """
+        startet und stopt die simulation
+        """
         if obj.state == "down":
             self.sim_play = True
             obj.text = "stop"
@@ -80,12 +95,18 @@ class MainWidget(RelativeLayout):
             obj.text = "start"
 
     def restart(self):
+        """
+        starttet die simulation neu
+        """
         self.time_running = 0
     
     def speed_change(self,obj):
         self.sim_speed = obj.value
 
     def draw_triangle(self,extra_y,length,direction):
+        """
+        berechnet die koordinaten der punkte eines pfeils
+        """
         arrow_pos_x = self.car_x+self.size_car*0.5
         arrow_y = self.size_car*0.5
         arrow_base_pos = arrow_pos_x,arrow_y-self.size_car*0.08+extra_y
@@ -132,14 +153,14 @@ class MainWidget(RelativeLayout):
         self.arrow_base_circle_2.pos = (self.car_x+self.size_car*0.35,self.size_car*0.65)
 
     def update_lables(self):
-
         self.car_x_label = "x: " + str(round(self.distance,1)) + "m"
         self.car_v_label = "v: " + str(round(self.speed,1)) + "m/s"
         self.car_t_label = "t: " + str(round(self.time_running,1)) + "s"
     
     def update(self,dt):
-
-        dt = min(dt,1/50)
+        """
+        updatet alle formen
+        """
 
         if self.sim_play:
             self.time_running += dt*self.sim_speed
@@ -157,4 +178,4 @@ class AutoAnimationApp(App):
     def build(self):
         self.load_kv("AutoAnimation.kv")
 
-AutoAnimationApp().run()
+AutoAnimationApp().run() # startet die app
