@@ -96,14 +96,14 @@ class MainWidget(RelativeLayout):
         return (arrow_base_pos,arrow_base_size,(*point1, *point2, *point3))
 
     def update_speed_arrow(self):
-        self.arrow_speed_length = (self.speed*10)*self.sim_speed
+        self.arrow_speed_length = (self.speed*10)*self.sim_speed*(self.width/800)
         base_pos,base_size,points = self.draw_triangle(self.size_car*-0.3,self.arrow_speed_length,1)
         self.speed_arrow_base.pos = base_pos
         self.speed_arrow_base.size = base_size
         self.speed_arrow_tip.points = [*points]
     
     def update_acceleration_arrow(self):
-        self.arrow_acceleration_length = (find_Fa(rr,u,find_phi(self.distance,rr,u))*10)/m
+        self.arrow_acceleration_length = ((find_Fa(rr,u,find_phi(self.distance,rr,u))*10)/m)*(self.width/800)
         base_pos,base_size,points = self.draw_triangle(self.size_car*0.3,self.arrow_acceleration_length,1)
         self.acceleration_arrow_base.pos = base_pos
         self.acceleration_arrow_base.size = base_size
@@ -111,7 +111,7 @@ class MainWidget(RelativeLayout):
 
     def update_friction_arrow(self):
         if friction == True:
-            self.arrow_friction_length = (Fr(self.speed)*10)/m
+            self.arrow_friction_length = ((Fr(self.speed)*10)/m)*(self.width/800)
         else:
             self.arrow_friction_length = 0
         base_pos,base_size,points = self.draw_triangle(self.size_car*0.3,-self.arrow_friction_length,-1)
