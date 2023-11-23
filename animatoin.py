@@ -170,8 +170,8 @@ class MainWidget(RelativeLayout):
         
         self.distance = self.sulution.sol(self.time_running)[1]
         self.speed = self.sulution.sol(self.time_running)[0]
-        self.friction = (Fr(self.speed))/m
         self.acceleration = find_Fa(rr,u,find_phi(self.distance,rr,u))/m
+        self.friction = (Fr(self.speed))/m
 
         self.update_speed_arrow()
         self.update_acceleration_arrow()
