@@ -1,6 +1,4 @@
 from math import *
-import numpy as np
-import matplotlib.pyplot as plt
 import scipy
 
 u = 12 #[-] Verhältnis von Drehmoment der Feder zu Drehmoment der Achse
@@ -122,22 +120,3 @@ def find_simulation_lenght(max_lenght,sulution,rr,u,v_min):
             return s
     
     return max_lenght
-
-
-
-sulution = solve_ivp(max_sim_length)
-
-s = find_simulation_lenght(max_sim_length,sulution,rr,u,0.1)
-
-t = np.linspace(0, s, 300)
-
-plt.plot(t, sulution.sol(t)[0].T,label='Speed[m/s]',color="green")
-plt.plot(t, sulution.sol(t)[1].T,label='position[m]',color=(1,0.55,0))
-plt.plot(t, find_phi(sulution.sol(t)[1],rr,u).T,label='Winkel Mausefalle[rad]',color=(0.58,0,0.82))
-plt.plot(t, (Fr(sulution.sol(t)[0])/m).T,label='Reibung[m/s²]',color="red")
-
-plt.xlabel('t')
-plt.legend()
-plt.title('Auto')
-
-plt.show()
