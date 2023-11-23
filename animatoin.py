@@ -55,7 +55,7 @@ class MainWidget(RelativeLayout):
         definirt die formen des geschwindigkeits pfeil
         """
         with self.canvas:
-            Color(0,0.6,0)
+            Color(0,0.5,0)
             self.speed_arrow_base = Rectangle()
         with self.canvas.after:
             Color(0,0.6,0)
@@ -66,7 +66,7 @@ class MainWidget(RelativeLayout):
         definirt die formen des beschleunigungs pfeil
         """
         with self.canvas:
-            Color(0,0,0.6)
+            Color(0,0,0.5)
             self.acceleration_arrow_base = Rectangle()
         with self.canvas.after:
             Color(0,0,0.6)
@@ -77,7 +77,7 @@ class MainWidget(RelativeLayout):
         definirt die formen des reibungs pfeil
         """
         with self.canvas:
-            Color(0.7,0,0)
+            Color(0.6,0,0)
             self.friction_arrow_base = Rectangle()
         with self.canvas.after:
             Color(0.7,0,0)
