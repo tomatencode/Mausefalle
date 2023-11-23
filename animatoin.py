@@ -1,3 +1,5 @@
+# Bitte umbenennen in animation.py
+
 from kivy.app import App
 from kivy.properties import Clock
 from kivy.uix.relativelayout import RelativeLayout

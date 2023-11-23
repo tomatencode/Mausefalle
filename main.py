@@ -1,3 +1,6 @@
+# Bitte den _pycache_ nicht committen - das ist kein source code
+# Mit .gitignore verhinderst Du, dass mans überhaupt einchecken kann!
+
 from math import *
 import scipy
 
