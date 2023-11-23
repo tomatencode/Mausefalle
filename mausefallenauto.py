@@ -1,7 +1,7 @@
 from math import *
 import scipy
 
-u = 12 #[-] Verhältnis von Drehmoment der Feder zu Drehmoment der Achse
+u = 50 #[-] Verhältnis von Drehmoment der Feder zu Drehmoment der Achse
 rr = 0.1 #[m] radius des antriebsreifen
 m = 0.1 #[kg] masse des autos
 
@@ -108,9 +108,9 @@ def solve_ivp(max_sim_length,friction):
 
     # max_sim_length[s] = maximale simulationslänge
     if friction == True:
-        sulution = scipy.integrate.solve_ivp(f, [0, max_sim_length], [0,0], dense_output=True)
+        sulution = scipy.integrate.solve_ivp(f, [0, max_sim_length], [0,0], method = "Radau", dense_output=True)
     else:
-        sulution = scipy.integrate.solve_ivp(fnofric, [0, max_sim_length], [0,0], dense_output=True)
+        sulution = scipy.integrate.solve_ivp(fnofric, [0, max_sim_length], [0,0], method = "Radau", dense_output=True)
     return sulution
 
 
