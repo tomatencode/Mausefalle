@@ -108,10 +108,10 @@ def solve_ivp(max_sim_length,friction):
 
     # max_sim_length[s] = maximale simulationslänge
     if friction == True:
-        sulution = scipy.integrate.solve_ivp(f, [0, max_sim_length], [0,0], method = "Radau", dense_output=True)
+        solution = scipy.integrate.solve_ivp(f, [0, max_sim_length], [0,0], method = "Radau", dense_output=True)
     else:
-        sulution = scipy.integrate.solve_ivp(fnofric, [0, max_sim_length], [0,0], method = "Radau", dense_output=True)
-    return sulution
+        solution = scipy.integrate.solve_ivp(fnofric, [0, max_sim_length], [0,0], method = "Radau", dense_output=True)
+    return solution
 
 
 def find_simulation_lenght(max_lenght,sulution,rr,u,v_min):

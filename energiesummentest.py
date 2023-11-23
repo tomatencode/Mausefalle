@@ -34,9 +34,9 @@ def find_Wacc(m,ve,va):
     return Wacc #[J]
 
 def test(do_print):
-    sulution = solve_ivp(max_sim_length,False)
-    ve = sulution.sol(max_sim_length)[0]
-    va = sulution.sol(0)[0]
+    solution = solve_ivp(max_sim_length,False)
+    ve = solution.sol(max_sim_length)[0]
+    va = solution.sol(0)[0]
 
     Wmf = find_Wmf(2,pi)
     Wacc = find_Wacc(m,ve,va)

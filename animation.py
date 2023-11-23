@@ -10,7 +10,7 @@ from energiesummentest import test
 
 class MainWidget(RelativeLayout):
 
-    size_car = 27
+    size_car = 0
     time_running = 0
     track_start = .1
     track_length = .8
@@ -143,7 +143,7 @@ class MainWidget(RelativeLayout):
         self.friction_arrow_tip.points = [*points]
 
     def update_car(self):
-        self.size_car = self.width/30
+        self.size_car = self.width/20
         self.max_distance = self.sulution.sol(max_sim_length)[1]
         self.distance_percent = self.distance / self.max_distance
         self.car_x = (self.track_start*self.width) + (self.track_length*self.width) * self.distance_percent
@@ -181,7 +181,7 @@ class MainWidget(RelativeLayout):
 
 class AutoAnimationApp(App):
     def build(self):
-        self.load_kv("AutoAnimation.kv")
+        self.load_kv("animation.kv")
 
 AutoAnimationApp().run() # startet die app
 test(True) # testet ob der energie erhaltungssatz verletzt wurde
