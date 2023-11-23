@@ -24,7 +24,7 @@ class MainWidget(RelativeLayout):
     sim_speed = 1
 
     sim_play = False
-    sulution = solve_ivp(max_sim_length,friction)
+    solution = solve_ivp(max_sim_length,friction)
     car_a_label = StringProperty("a: 0")
     car_v_label = StringProperty("v: 0")
     car_x_label = StringProperty("x: 0")
@@ -144,7 +144,7 @@ class MainWidget(RelativeLayout):
 
     def update_car(self):
         self.size_car = self.width/20
-        self.max_distance = self.sulution.sol(max_sim_length)[1]
+        self.max_distance = self.solution.sol(max_sim_length)[1]
         self.distance_percent = self.distance / self.max_distance
         self.car_x = (self.track_start*self.width) + (self.track_length*self.width) * self.distance_percent
         self.car.size = (self.size_car,self.size_car)
@@ -168,8 +168,8 @@ class MainWidget(RelativeLayout):
         if self.sim_play:
             self.time_running += dt*self.sim_speed
         
-        self.distance = self.sulution.sol(self.time_running)[1]
-        self.speed = self.sulution.sol(self.time_running)[0]
+        self.distance = self.solution.sol(self.time_running)[1]
+        self.speed = self.solution.sol(self.time_running)[0]
         self.acceleration = find_Fa(rr,u,find_phi(self.distance,rr,u))/m
         self.friction = (Fr(self.speed))/m
 
