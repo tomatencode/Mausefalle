@@ -8,14 +8,14 @@ m = 0.1 #[kg] masse des autos
 friction = True
 max_sim_length = 30 #[s] maximum simulation length
 
-def Fr(v):
+def Fr(v : float) -> float:
     """
-    Reibungswidersandkraft des Autos in ahängigkeit zur geschwindigkeit in [N] (Benutzerdefinirt)
+    Reibungswiederstandkraft des Autos in Abhängigkeit zur Geschwindigkeit in [N] (Benutzerdefiniert) # papa: Rechtschreibfehler -> Code Spell Checker
     """
     return v / 20 # Wiederstand in [N] (Schätzwert)
 
 
-def Ff(phi):
+def Ff(phi : float) -> float:
     """
     Federkraft in abhängigkeit zu den umdrehungen in [N] (Benutzerdefinirt)
     """
@@ -26,13 +26,13 @@ def Ff(phi):
     # phi[-] = anzahl der bisherigen umdrehungen
 
     if phi < pi:
-        return 2 # Kraft der Feder in [Nm] (Schätzwert)
+        return 2 # Kraft der Feder in [Nm] (Schätzwert) # papa: Ich würde Erwarten dass die FEderkraft abnimmt, wenn die Feder sich der Ruhelage nähert
     else:
         return 0 # Kraft der Feder in [Nm]
 
 
 
-def find_phi(x,rr,u):
+def find_phi(x: float,rr: float,u: float)-> float:
     """
     findet die anzahl der umdrehungen der mausefalle in abhängigkeit zur zurückgelegten strecke in [-],
     """
@@ -40,7 +40,7 @@ def find_phi(x,rr,u):
     # teilt die zurückgelekte stricke durch die bisherigen umdrehungen mal das übersetzungsverhältnis.
 
     # x[m] = zurückgelegte strecke
-    # ü[-] = überstetzungsverhältnis von Mausefalle zu Achse
+    # ü[-] = übersetzungsverhältnis von Mausefalle zu Achse
     # ur[m] = umfang des rades 
     # rr[m] = radius des rades
     # phi[-] = anzahl der bisherigen umdrehungen
@@ -103,18 +103,18 @@ def fnofric(t, y):
 
 def solve_ivp(max_sim_length,friction):
     """
-    lößt die differenzialgleichung f(t,y) mit scipy
+    löst die differenzialgleichung f(t,y) mit scipy
     """
 
     # max_sim_length[s] = maximale simulationslänge
     if friction == True:
-        sulution = scipy.integrate.solve_ivp(f, [0, max_sim_length], [0,0], method = "Radau", dense_output=True)
+        solution = scipy.integrate.solve_ivp(f, [0, max_sim_length], [0,0], method = "Radau", dense_output=True)
     else:
-        sulution = scipy.integrate.solve_ivp(fnofric, [0, max_sim_length], [0,0], method = "Radau", dense_output=True)
-    return sulution
+        solution = scipy.integrate.solve_ivp(fnofric, [0, max_sim_length], [0,0], method = "Radau", dense_output=True)
+    return solution
 
 
-def find_simulation_lenght(max_lenght,sulution,rr,u,v_min):
+def find_simulation_length(max_length,solution,rr,u,v_min):
     """
     findet passende simulationslänge in [s]
     """
@@ -127,11 +127,11 @@ def find_simulation_lenght(max_lenght,sulution,rr,u,v_min):
     # v[m/s] = aktuelle geschwindigkeit
     # phi[-] = anzahl der bisherigen umdrehungen
 
-    for s in range(0,max_lenght):
-        x = sulution.sol(s)[1]
-        v = sulution.sol(s)[0]
+    for s in range(0,max_length):
+        x = solution.sol(s)[1]
+        v = solution.sol(s)[0]
         phi = find_phi(x,rr,u)
         if phi > pi and v < v_min:
             return s
     
-    return max_lenght
+    return max_length
