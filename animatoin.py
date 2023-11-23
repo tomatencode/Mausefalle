@@ -4,7 +4,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Ellipse, Triangle, Rectangle
 from kivy.properties import StringProperty
-from mausefallenauto import solve_ivp, find_Fa, find_phi, Fr, rr, u, m
+from mausefallenauto import solve_ivp, find_Fa, find_phi, Fr, rr, u, m, friction
 from mausefallenauto import rr
 from mausefallenauto import m
 from mausefallenauto import u
@@ -20,13 +20,13 @@ class MainWidget(RelativeLayout):
 
     arrow_speed_length = 0
     arrow_acceleration_length = 0
-    arrow_drag_length = 0
+    arrow_friction_length = 0
 
 
     sim_speed = 1
 
     sim_play = False
-    sulution = solve_ivp(max_sim_length)
+    sulution = solve_ivp(max_sim_length,friction)
     car_x_label = StringProperty("x: 0")
     car_v_label = StringProperty("v: 0")
     car_t_label = StringProperty("t: 0")
@@ -36,7 +36,7 @@ class MainWidget(RelativeLayout):
         super().__init__(**kwargs)
         self.innit_speed_arrow()
         self.innit_acceleration_arrow()
-        self.innit_drag_arrow()
+        self.innit_friction_arrow()
         self.innit_car()
     
         Clock.schedule_interval(self.update,1.0/60.0)
@@ -66,13 +66,13 @@ class MainWidget(RelativeLayout):
             Color(0,0,0.6)
             self.acceleration_arrow_tip = Triangle()
     
-    def innit_drag_arrow(self):
+    def innit_friction_arrow(self):
         with self.canvas:
             Color(0.7,0,0)
-            self.drag_arrow_base = Rectangle()
+            self.friction_arrow_base = Rectangle()
         with self.canvas.after:
             Color(0.7,0,0)
-            self.drag_arrow_tip = Triangle()
+            self.friction_arrow_tip = Triangle()
     
     def start_stop(self,obj):
         if obj.state == "down":
@@ -112,12 +112,15 @@ class MainWidget(RelativeLayout):
         self.acceleration_arrow_base.size = base_size
         self.acceleration_arrow_tip.points = [*points]
 
-    def update_drag_arrow(self):
-        self.arrow_drag_length = (Fr(self.speed)*10)/m
-        base_pos,base_size,points = self.draw_triangle(self.size_car*0.3,-self.arrow_drag_length,-1)
-        self.drag_arrow_base.pos = base_pos
-        self.drag_arrow_base.size = base_size
-        self.drag_arrow_tip.points = [*points]
+    def update_friction_arrow(self):
+        if friction == True:
+            self.arrow_friction_length = (Fr(self.speed)*10)/m
+        else:
+            self.arrow_friction_length = 0
+        base_pos,base_size,points = self.draw_triangle(self.size_car*0.3,-self.arrow_friction_length,-1)
+        self.friction_arrow_base.pos = base_pos
+        self.friction_arrow_base.size = base_size
+        self.friction_arrow_tip.points = [*points]
 
     def update_car(self):
         self.size_car = self.width/30
@@ -149,7 +152,7 @@ class MainWidget(RelativeLayout):
 
         self.update_speed_arrow()
         self.update_acceleration_arrow()
-        self.update_drag_arrow()
+        self.update_friction_arrow()
         self.update_lables()
         self.update_car()
 
