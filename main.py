@@ -6,7 +6,7 @@ rr = 0.1 #[m] radius des antriebsreifen
 m = 0.1 #[kg] masse des autos
 
 friction = True
-max_sim_length = 30 #[s] maximum simulation length
+max_sim_length = 60 #[s] maximum simulation length
 
 def Fr(v):
     """
