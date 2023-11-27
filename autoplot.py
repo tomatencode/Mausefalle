@@ -4,7 +4,7 @@ from main import solve_ivp, find_simulation_lenght,find_phi,Fr,rr,u,max_sim_leng
 from energiesummentest import test
 
 
-solution = solve_ivp(max_sim_length,friction) # lösung der differenzialgleichung [-]
+solution, max_x = solve_ivp(max_sim_length,friction) # lösung der differenzialgleichung [-]
 
 s = find_simulation_lenght(max_sim_length,solution,rr,u,0.1) # passende länge der simulation [s]
 
@@ -21,4 +21,7 @@ plt.legend()
 plt.title('Auto')
 
 plt.show()
+
+print("geschätzte Distanz: " + str(max_x) + " m")
+
 test(True) # testet ob der energieerhaltungs satz verletzt wurde

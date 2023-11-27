@@ -24,10 +24,11 @@ class MainWidget(RelativeLayout):
     sim_speed = 1
 
     sim_play = False
-    solution = solve_ivp(max_sim_length,friction)
+    solution, max_x = solve_ivp(max_sim_length,friction)
     car_a_label = StringProperty("a: 0")
     car_v_label = StringProperty("v: 0")
     car_x_label = StringProperty("x: 0")
+    max_x_label = StringProperty("max distance: " + str(round(max_x,2)))
     car_t_label = StringProperty("t: 0")
 
 

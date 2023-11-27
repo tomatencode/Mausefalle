@@ -1,22 +1,32 @@
 from math import *
-from main import solve_ivp,m,max_sim_length
+import scipy
+from main import solve_ivp, find_Ff_nolim,m,max_sim_length
 
 tolleranz = 0.05 # erlaubte abweichung des energie erhaltungs Satzes
 
-def find_Wmf(M,w):
+def find_Ff_solve(phi,F):
+    """
+    differenzialgleichung mit der die kraft der mausefalle berechnet wird
+    """
+
+    return [find_Ff_nolim(phi)]
+
+def find_Wmf(phi):
     """
     berechnet die Spannarbeit der Mausefalle in [J]
     """
 
-    # errechnet die Arbeit[J] indem es das Drehmoment[Nm] mit dem winkelbereich[rad].
+    # errechnet die Arbeit[J] indem es das Integral der Kraft der Feder [Nm] abhängig zum winkelbereich[rad] löst.
 
-    # M[Nm] = Drehmoment
-    # w[rad] = anzahl der umdrehungen in Radien
+    # phi[rad] = winkel in dem die Feder Arbeit verrichtet in Radien
     # Wmf[J] = verrichtete Spannarbeit der Feder
 
-    e = M * w # e[J] = M[Nm] * w[rad]
+    Ff_solution = scipy.integrate.solve_ivp(find_Ff_solve, [0, phi], [0],  method = "Radau")
+    x_size = Ff_solution.y[0].size
+    max_x = Ff_solution.y[0][x_size-1]
+    Wmf = max_x
 
-    return e #[J]
+    return Wmf #[J]
 
 def find_Wacc(m,ve,va):
     """
@@ -34,11 +44,11 @@ def find_Wacc(m,ve,va):
     return Wacc #[J]
 
 def test(do_print):
-    solution = solve_ivp(max_sim_length,False)
+    solution,max_x = solve_ivp(max_sim_length,False)
     ve = solution.sol(max_sim_length)[0]
     va = solution.sol(0)[0]
 
-    Wmf = find_Wmf(2,pi)
+    Wmf = find_Wmf(pi)
     Wacc = find_Wacc(m,ve,va)
     abweichung = abs(Wmf - Wacc)
 

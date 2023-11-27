@@ -14,8 +14,10 @@ def Fr(v):
     """
     return v / 20 # Wiederstand in [N] (Schätzwert)
 
+def find_Ff_nolim(phi):
+    return 1 + (abs(phi-pi)/pi)*2
 
-def Ff(phi):
+def find_Ff(phi):
     """
     Federkraft in abhängigkeit zu den umdrehungen in [N] (Benutzerdefinirt)
     """
@@ -26,7 +28,7 @@ def Ff(phi):
     # phi[-] = anzahl der bisherigen umdrehungen
 
     if phi < pi:
-        return 2 # Kraft der Feder in [Nm] (Schätzwert)
+        return find_Ff_nolim(phi) # Kraft der Feder in [Nm] (Schätzwert)
     else:
         return 0 # Kraft der Feder in [Nm]
 
@@ -68,7 +70,7 @@ def find_Fa(rr,ü,phi):
     # rr[M] = Radius des Rades
     # ü[-] = überstetzungsverhältnis von Mausefalle zu Achse
 
-    Ma = Ff(phi) # Ma[Nm] = Ff(phi[rad])[Nn]
+    Ma = find_Ff(phi) # Ma[Nm] = Ff(phi[rad])[Nn]
     Me = Ma / ü # Me[Nm] = Ma / ü[-]
     Fa = Me / rr # Fa[Nm] = Me[Nm] / rr[m]
 
@@ -111,7 +113,9 @@ def solve_ivp(max_sim_length,friction):
         solution = scipy.integrate.solve_ivp(f, [0, max_sim_length], [0,0], method = "Radau", dense_output=True)
     else:
         solution = scipy.integrate.solve_ivp(fnofric, [0, max_sim_length], [0,0], method = "Radau", dense_output=True)
-    return solution
+    x_size = solution.y[1].size
+    max_x = solution.y[1][x_size-1]
+    return solution, max_x
 
 
 def find_simulation_lenght(max_lenght,sulution,rr,u,v_min):
