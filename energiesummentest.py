@@ -22,8 +22,10 @@ def find_Wmf(phi):
     # Wmf[J] = verrichtete Spannarbeit der Feder
 
     Ff_solution = scipy.integrate.solve_ivp(find_Ff_solve, [0, phi], [0],  method = "Radau")
-    x_size = Ff_solution.y[0].size
+    
+    x_size = Ff_solution.y[0].size    
     max_x = Ff_solution.y[0][x_size-1]
+
     Wmf = max_x
 
     return Wmf #[J]
